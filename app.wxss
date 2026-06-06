@@ -1,0 +1,79 @@
+/** app.wxss **/
+/* 定义全局变量 - 企业级美式铁馆配色 */
+page {
+  --primary: #7A1A1A;     /* 深红色，更沉稳 */
+  --primary-light: #9B2C2C; /* 亮红色，用于高亮 */
+  --bg: #F5E6DC;          /* 米色背景 */
+  --card-bg: #E8D5C8;     /* 卡片背景色，稍微深一点的米色 */
+  --text-main: #2D2D2D;   /* 深灰，接近黑 */
+  --text-secondary: #5D4037; /* 棕褐色 */
+  --border-radius-lg: 32rpx;
+  --border-radius-md: 24rpx;
+  --border-radius-sm: 12rpx;
+  --shadow-sm: 0 4rpx 12rpx rgba(122, 26, 26, 0.05);
+  --shadow-md: 0 8rpx 24rpx rgba(122, 26, 26, 0.1);
+  
+  /* 设置全局字体和背景 */
+  background-color: var(--bg);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei',
+    sans-serif;
+  box-sizing: border-box;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* 通用卡片样式 - 胶囊风格 */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: var(--shadow-sm);
+}
+
+/* 主色按钮样式 - 胶囊风格 */
+.btn-primary {
+  background-color: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 40rpx;
+  padding: 20rpx 40rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 12rpx rgba(122, 26, 26, 0.3);
+  font-size: 28rpx;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* 图标通用 */
+.icon-box {
+  width: 80rpx;
+  height: 80rpx;
+  border: 2rpx solid #D32F2F;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12rpx;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* 文本截断 */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
