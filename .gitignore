@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+
+.env
+*.log
+
+db.sqlite3
+django_error.log
+
+.idea/
+.vscode/
+.venv/
+venv/

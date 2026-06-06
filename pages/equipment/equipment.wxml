@@ -1,0 +1,121 @@
+<view class="container">
+  <!-- 顶部 Tab 栏 -->
+  <scroll-view class="tab-bar" scroll-x enable-flex>
+    <view 
+      wx:for="{{categories}}" 
+      wx:key="key"
+      class="tab-item {{currentTab === index ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-index="{{index}}"
+    >
+      {{item.name}}
+    </view>
+  </scroll-view>
+
+  <!-- 状态拦截区：Loading 态 (骨架屏) -->
+  <view class="skeleton-grid" wx:if="{{pageStatus === 'loading'}}">
+    <view class="skeleton-item" wx:for="{{[1,2,3,4,5,6]}}" wx:key="*this">
+      <view class="skeleton-img"></view>
+      <view class="skeleton-text"></view>
+    </view>
+  </view>
+
+  <view class="empty-wrap" wx:elif="{{pageStatus === 'empty'}}">
+    <view class="empty-icon">📭</view>
+    <text class="empty-text">暂无器械数据</text>
+  </view>
+  <scroll-view class="equipment-grid" scroll-y wx:else>
+    <view class="grid-content">
+      <view 
+        class="equipment-item" 
+        wx:for="{{equipmentList}}" 
+        wx:key="id"
+        bindtap="onEquipmentTap"
+        data-item="{{item}}"
+      >
+        <image wx:if="{{item.list_media}}" class="equipment-img" src="{{item.list_media}}" mode="aspectFill"></image>
+        <view class="equipment-status status-maintenance" wx:if="{{item.show_maintenance_status}}">{{item.status_label}}</view>
+        <view class="equipment-card-body">
+          <view class="equipment-card-head">
+            <text class="equipment-part">{{item.part_name}}</text>
+            <text class="equipment-location">{{item.location}}</text>
+          </view>
+          <text class="equipment-name">{{item.name}}</text>
+          <text class="equipment-focus">{{item.training_focus || item.target_muscles}}</text>
+          <text class="equipment-muscles">{{item.target_muscles}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="footer-spacer"></view>
+  </scroll-view>
+
+  <view class="footer-btn" bindtap="onExit">退出</view>
+
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="closeModal">
+    <view class="modal-content" catchtap="preventBubble">
+      <view class="modal-header">
+        <view class="back-btn" bindtap="closeModal">
+            <text>❮</text>
+        </view>
+        <text class="modal-title">{{selectedItem.name}}</text>
+      </view>
+      
+      <view class="modal-body">
+        <view class="detail-tags">
+          <text class="detail-tag">部位：{{selectedItem.part_name || '-'}}</text>
+          <text class="detail-tag">位置：{{selectedItem.location || '-'}}</text>
+          <text class="detail-tag" wx:if="{{selectedItem.show_maintenance_status}}">状态：{{selectedItem.status_label}}</text>
+          <text class="detail-tag">肌群：{{selectedItem.target_muscles || '-'}}</text>
+        </view>
+
+        <view class="detail-tab-row">
+          <view class="option-card {{activeDetailTab === 'gif' ? 'active' : ''}}" bindtap="onSwitchDetailTab" data-tab="gif">
+            <text>动作动图</text>
+          </view>
+          <view class="option-card {{activeDetailTab === 'desc' ? 'active' : ''}}" bindtap="onSwitchDetailTab" data-tab="desc">
+            <text>器械介绍</text>
+          </view>
+          <view class="option-card {{activeDetailTab === 'notice' ? 'active' : ''}}" bindtap="onSwitchDetailTab" data-tab="notice">
+            <text>注意事项</text>
+          </view>
+        </view>
+
+        <view class="detail-panel" wx:if="{{activeDetailTab === 'gif'}}">
+          <image wx:if="{{selectedItem.gif_url}}" class="detail-gif" src="{{selectedItem.gif_url}}" mode="aspectFit"></image>
+          <view wx:else class="detail-empty-media">
+            <text class="detail-text">暂无图示</text>
+          </view>
+        </view>
+        <view class="detail-panel" wx:if="{{activeDetailTab === 'desc'}}">
+          <text class="detail-title">器械介绍</text>
+          <text class="detail-text">{{selectedItem.description || '暂无描述'}}</text>
+          <text class="detail-subtitle" wx:if="{{selectedItem.training_focus}}">训练定位</text>
+          <text class="detail-text" wx:if="{{selectedItem.training_focus}}">{{selectedItem.training_focus}}</text>
+          <text class="detail-subtitle" wx:if="{{selectedItem.action_tips}}">动作要点</text>
+          <text class="detail-text" wx:if="{{selectedItem.action_tips}}">{{selectedItem.action_tips}}</text>
+        </view>
+        <view class="detail-panel" wx:if="{{activeDetailTab === 'notice'}}">
+          <text class="detail-title">训练注意事项</text>
+          <text class="detail-text">{{selectedItem.precautions || '暂无注意事项'}}</text>
+        </view>
+
+        <view class="repair-wrap">
+          <button class="repair-trigger {{selectedItem.show_maintenance_status ? 'disabled' : ''}}" bindtap="onOpenRepairForm" disabled="{{selectedItem.show_maintenance_status || submittingRepair}}">
+            {{selectedItem.show_maintenance_status ? '已在维修中' : '一键报修'}}
+          </button>
+          <view class="repair-form" wx:if="{{repairFormVisible}}">
+            <textarea class="repair-textarea" placeholder="请描述器械异常，例如异响、卡顿、松动等" value="{{repairIssue}}" bindinput="onRepairInput" maxlength="200"></textarea>
+            <view class="repair-action-row">
+              <button class="repair-cancel" bindtap="onCancelRepair">取消</button>
+              <button class="repair-submit" bindtap="onSubmitRepair" loading="{{submittingRepair}}" disabled="{{submittingRepair}}">提交报修</button>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-footer" bindtap="closeModal">
+        <text>退出</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,84 @@
+<!--pages/ai/ai.wxml-->
+<view class="container">
+  <view class="chat-state" wx:if="{{chatStatus !== 'success'}}">{{chatStatusText || (chatStatus === 'loading' ? '会话加载中...' : '')}}</view>
+  <view class="rag-debug-bar">
+    <text class="rag-debug-line">RAG: {{ragStatusText}}</text>
+    <text class="rag-debug-line">后台入口: {{ragBaseUrl}}</text>
+    <text class="rag-debug-line" wx:if="{{lastRagEndpoint}}">命中: {{lastRagEndpoint}}</text>
+  </view>
+  <!-- 聊天消息列表区域 -->
+  <scroll-view class="chat-list" scroll-y="true" scroll-into-view="{{lastId}}" scroll-with-animation="true">
+    <block wx:for="{{messages}}" wx:key="id">
+      <!-- 消息项 -->
+      <view class="message-item {{item.type === 'user' ? 'user-message' : 'ai-message'}}" id="msg-{{index}}">
+        <!-- 头像 -->
+        <view class="avatar">
+          <text wx:if="{{item.type === 'ai'}}">🤖</text>
+          <text wx:else>👤</text>
+        </view>
+        
+        <!-- 气泡内容 -->
+        <view class="bubble">
+          <text>{{item.content}}</text>
+          <view class="message-meta" wx:if="{{item.type === 'ai' && item.contextPreview}}">
+            <text class="message-meta-title">检索片段</text>
+            <text class="message-meta-text">{{item.contextPreview}}</text>
+          </view>
+          <view class="message-meta" wx:if="{{item.type === 'ai' && item.sources && item.sources.length}}">
+            <text class="message-meta-title">来源线索</text>
+            <view class="message-tags">
+              <text class="message-tag" wx:for="{{item.sources}}" wx:key="*this">{{item}}</text>
+            </view>
+          </view>
+          <view class="message-meta" wx:if="{{item.type === 'ai' && item.relatedQuestions && item.relatedQuestions.length}}">
+            <text class="message-meta-title">相关问题</text>
+            <view class="message-tags">
+              <text class="message-tag" wx:for="{{item.relatedQuestions}}" wx:key="*this">{{item}}</text>
+            </view>
+          </view>
+          <text class="message-endpoint" wx:if="{{item.type === 'ai' && item.endpoint}}">命中接口：{{item.endpoint}}</text>
+        </view>
+      </view>
+    </block>
+    
+    <!-- Loading 状态 -->
+    <view class="message-item ai-message" wx:if="{{loading}}">
+       <view class="avatar">🤖</view>
+       <view class="bubble loading">
+         <view class="dot"></view>
+         <view class="dot"></view>
+         <view class="dot"></view>
+       </view>
+    </view>
+    
+    <!-- 底部垫高，防止被输入框遮挡 -->
+    <view style="height: 180rpx;" id="bottom"></view>
+  </scroll-view>
+
+  <!-- 底部操作区 -->
+  <view class="footer">
+    <!-- 快捷标签 -->
+    <scroll-view class="quick-tags" scroll-x="true">
+      <view class="tag" wx:for="{{quickTags}}" wx:key="*this" bindtap="onTagTap" data-text="{{item}}">
+        {{item}}
+      </view>
+    </scroll-view>
+    
+    <!-- 输入框 -->
+    <view class="input-area" bindtap="onTapComposer">
+      <textarea class="chat-textarea"
+                placeholder="询问关于健身、课程的问题..."
+                placeholder-class="input-placeholder"
+                value="{{inputValue}}"
+                maxlength="200"
+                auto-height="{{false}}"
+                focus="{{focusComposer}}"
+                cursor-spacing="20"
+                show-confirm-bar="{{false}}"
+                bindinput="onInput"
+                bindfocus="onComposerFocus"
+                bindblur="onComposerBlur" />
+      <button class="send-btn" bindtap="onSend" disabled="{{!inputValue}}">发送</button>
+    </view>
+  </view>
+</view>

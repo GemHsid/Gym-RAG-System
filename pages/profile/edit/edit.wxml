@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="form-group">
+    <view class="form-item avatar-item" bindtap="onChangeAvatar">
+      <text class="label">头像</text>
+      <view class="right-content">
+        <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+        <text class="arrow">></text>
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <text class="label">昵称</text>
+      <input class="input" type="nickname" value="{{userInfo.nickName}}" placeholder="请输入昵称" bindchange="onNameChange"/>
+    </view>
+  </view>
+
+  <button class="save-btn" bindtap="onSave" disabled="{{saving}}">{{saving ? '保存中...' : '保存修改'}}</button>
+</view>

@@ -1,0 +1,88 @@
+<!--pages/course/course.wxml-->
+<view class="container">
+
+  <!-- 顶部背景 Logo -->
+  <view class="header-bg">
+    <view class="logo-2025">2026</view>
+  </view>
+  
+  <!-- 日历条 -->
+  <view class="calendar-strip">
+    <view 
+      class="calendar-item {{selectedDateIndex === index ? 'active' : ''}}" 
+      wx:for="{{dates}}" 
+      wx:key="date"
+      bindtap="onSelectDate"
+      data-index="{{index}}"
+    >
+      <text class="date-num">{{item.date}}</text>
+      <text class="date-week">{{item.week}}</text>
+    </view>
+  </view>
+
+
+
+  <!-- 筛选器 -->
+  <view class="filter-bar" bindtap="onToggleFilter">
+    <text>{{selectedFilter}} ▼</text>
+  </view>
+
+  <!-- 课程/教练列表 -->
+  <scroll-view scroll-y class="course-list" wx:if="{{coaches.length}}">
+    <block wx:for="{{coaches}}" wx:key="id">
+      <view class="coach-section">
+        <view class="coach-card">
+          <view class="coach-avatar-wrapper">
+            <image class="coach-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+          </view>
+          <view class="coach-info">
+            <text class="coach-name">{{item.name}} <text wx:if="{{item.title}}" class="coach-title">({{item.title}})</text></text>
+          </view>
+          <button 
+            class="action-btn {{item.action === '收起' ? 'grey' : ''}}" 
+            bindtap="onCoachAction" 
+            data-id="{{item.id}}"
+          >
+            {{item.action}}
+          </button>
+        </view>
+        
+        <!-- 展开的课程列表 -->
+        <view class="sub-course-list" wx:if="{{item.isExpanded && item.courses}}">
+          <view class="sub-course-item" wx:for="{{item.courses}}" wx:for-item="course" wx:key="id">
+            <image class="sub-course-avatar" src="{{course.avatar}}" mode="aspectFill"></image>
+            <view class="coach-info">
+              <text class="sub-course-name">{{course.name}}</text>
+              <text class="coach-title" wx:if="{{course.category || course.intensity}}">{{course.category}} {{course.intensity}}</text>
+              <text class="coach-title" wx:if="{{course.suitableFor}}">适合：{{course.suitableFor}}</text>
+            </view>
+            <button class="action-btn" bindtap="onBooking" data-id="{{course.id}}">预约</button>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+  <view class="empty-text" wx:if="{{listStatus === 'success' && !coaches.length}}">当日暂无课程安排</view>
+
+  <!-- 筛选侧边栏/弹窗 -->
+  <view class="filter-modal {{showFilter ? 'show' : ''}}" bindtap="onToggleFilter">
+    <view class="filter-content" catchtap="true">
+      <view class="filter-header">选择课程 (可多选)</view>
+      <view class="filter-options">
+        <view 
+          wx:for="{{filterOptions}}" 
+          wx:key="*this"
+          class="filter-opt {{selectedFilter === item ? 'active' : ''}}"
+          bindtap="onSelectFilter"
+          data-val="{{item}}"
+        >
+          {{item}}
+        </view>
+      </view>
+      <view class="filter-footer">
+        <view class="footer-btn clear" bindtap="onSelectFilter" data-val="全部课程">清空</view>
+        <view class="footer-btn confirm" bindtap="onToggleFilter">确认</view>
+      </view>
+    </view>
+  </view>
+</view>

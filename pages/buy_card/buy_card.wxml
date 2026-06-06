@@ -1,0 +1,40 @@
+<!--pages/buy_card/buy_card.wxml-->
+<view class="container">
+
+  <scroll-view scroll-y class="card-list">
+    <block wx:for="{{cards}}" wx:key="id">
+      <view class="buy-card-item">
+        <view class="card-left">
+          <view class="card-title-row">
+            <text class="icon-crown">👑</text>
+            <text class="card-name">{{item.name}}</text>
+          </view>
+          <view class="card-desc" wx:if="{{item.desc}}">{{item.desc}}</view>
+          <view class="card-validity">有效期：{{item.days}}天</view>
+          <view class="card-tag">{{item.tag || '单店使用'}}</view>
+        </view>
+        
+        <view class="card-right">
+          <image class="crown-bg" src="/assets/crown-bg.png" mode="aspectFit" wx:if="{{false}}"></image> <!-- 占位图 -->
+          <view class="price-box">
+            <text class="currency">¥</text>
+            <text class="amount">{{item.price}}</text>
+          </view>
+          <button
+            class="buy-btn"
+            data-id="{{item.id}}"
+            bindtap="onPurchase"
+            loading="{{purchasingId === item.id}}"
+            disabled="{{!!purchasingId}}"
+          >
+            立即抢购
+          </button>
+        </view>
+        
+        <!-- 装饰用的金色皇冠图标 (CSS模拟) -->
+        <view class="crown-decoration">👑</view>
+      </view>
+    </block>
+  </scroll-view>
+  <view class="empty-text" wx:if="{{pageStatus === 'success' && !cards.length}}">暂无可购买会员卡</view>
+</view>

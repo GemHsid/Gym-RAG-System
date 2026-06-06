@@ -1,0 +1,101 @@
+.container {
+  min-height: 100vh;
+  padding: 30rpx;
+  background: var(--bg);
+  box-sizing: border-box;
+}
+
+.status-tip {
+  margin-bottom: 20rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  background: #FDF6F0;
+  color: #8B3A3A;
+  font-size: 24rpx;
+}
+
+.status-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.status-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2D2D2D;
+}
+
+.status-badge {
+  font-size: 22rpx;
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+}
+
+.status-badge.pending {
+  color: #E65100;
+  background: rgba(230, 81, 0, 0.12);
+}
+
+.status-badge.success {
+  color: #2E7D32;
+  background: rgba(46, 125, 50, 0.12);
+}
+
+.status-badge.refunding {
+  color: #8E24AA;
+  background: rgba(142, 36, 170, 0.12);
+}
+
+.status-badge.refunded {
+  color: #1565C0;
+  background: rgba(21, 101, 192, 0.12);
+}
+
+.status-badge.failed {
+  color: #C62828;
+  background: rgba(198, 40, 40, 0.12);
+}
+
+.status-line {
+  font-size: 26rpx;
+  color: #5D4037;
+  margin-bottom: 12rpx;
+}
+
+.status-desc {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #8D6E63;
+  line-height: 1.5;
+}
+
+.action-row {
+  margin-top: 28rpx;
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn {
+  flex: 1;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+}
+
+.refresh-btn {
+  background: #EEE;
+  color: #5D4037;
+}
+
+.refund-btn {
+  background: var(--primary);
+  color: #fff;
+}

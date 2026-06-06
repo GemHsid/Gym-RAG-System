@@ -1,0 +1,3453 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Trae Fitness API",
+        "version": "2.0.0",
+        "description": "企业级智能健身房管理系统 API 接口文档"
+    },
+    "paths": {
+        "/api/bot/chat/": {
+            "post": {
+                "operationId": "bot_chat_create",
+                "tags": [
+                    "bot"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/courses/schedule/": {
+            "get": {
+                "operationId": "courses_schedule_retrieve",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "date",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "courses"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseScheduleEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/equipment/repair/": {
+            "post": {
+                "operationId": "equipment_repair_create",
+                "tags": [
+                    "equipment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentRepairCreate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentRepairCreate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentRepairCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EquipmentRepairCreateEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/bookings/": {
+            "get": {
+                "operationId": "fitness_bookings_list",
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Booking"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "fitness_bookings_create",
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/bookings/{id}/cancel/": {
+            "post": {
+                "operationId": "fitness_bookings_cancel_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 课程预约 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/bookings/{id}/set_status/": {
+            "post": {
+                "operationId": "fitness_bookings_set_status_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 课程预约 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/checkins/": {
+            "get": {
+                "operationId": "fitness_checkins_list",
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CheckIn"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/checkins/checkin/": {
+            "post": {
+                "operationId": "fitness_checkins_checkin_create",
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CheckIn"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CheckIn"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CheckIn"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CheckIn"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/checkins/checkout/": {
+            "post": {
+                "operationId": "fitness_checkins_checkout_create",
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CheckIn"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CheckIn"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CheckIn"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CheckIn"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/courses/": {
+            "get": {
+                "operationId": "fitness_courses_list",
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Course"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "fitness_courses_create",
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Course"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Course"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Course"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/courses/{id}/": {
+            "get": {
+                "operationId": "fitness_courses_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 课程安排 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "fitness_courses_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 课程安排 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Course"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Course"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Course"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "fitness_courses_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 课程安排 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCourse"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCourse"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCourse"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "fitness_courses_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 课程安排 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/fitness/equipment/": {
+            "get": {
+                "operationId": "fitness_equipment_retrieve",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "part_id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EquipmentListEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/equipment-usage/": {
+            "get": {
+                "operationId": "fitness_equipment_usage_list",
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EquipmentUsage"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/equipment-usage/{id}/stop/": {
+            "post": {
+                "operationId": "fitness_equipment_usage_stop_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 器械使用记录 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentUsage"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentUsage"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentUsage"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EquipmentUsage"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/equipment-usage/start/": {
+            "post": {
+                "operationId": "fitness_equipment_usage_start_create",
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentUsage"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentUsage"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentUsage"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EquipmentUsage"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/team/": {
+            "get": {
+                "operationId": "fitness_team_list",
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TeamMember"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "fitness_team_create",
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamMember"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamMember"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamMember"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamMember"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fitness/team/{id}/": {
+            "get": {
+                "operationId": "fitness_team_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 团队成员 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamMember"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "fitness_team_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 团队成员 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamMember"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamMember"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamMember"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamMember"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "fitness_team_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 团队成员 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedTeamMember"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedTeamMember"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedTeamMember"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamMember"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "fitness_team_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 团队成员 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fitness"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/gym/guide/": {
+            "get": {
+                "operationId": "gym_guide_retrieve",
+                "tags": [
+                    "gym"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GymGuideEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/home/info/": {
+            "get": {
+                "operationId": "home_info_retrieve",
+                "tags": [
+                    "home"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HomeInfoEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/products/": {
+            "get": {
+                "operationId": "orders_products_retrieve",
+                "tags": [
+                    "orders"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductListEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/purchase/": {
+            "post": {
+                "operationId": "orders_purchase_create",
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PurchaseRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PurchaseRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PurchaseRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PurchaseEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/refund/apply/": {
+            "post": {
+                "operationId": "orders_refund_apply_create",
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefundApplyRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefundApplyRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefundApplyRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RefundApplyEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/refund/status/": {
+            "get": {
+                "operationId": "orders_refund_status_retrieve",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "order_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RefundStatusEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/status/": {
+            "get": {
+                "operationId": "orders_status_retrieve",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "order_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderStatusEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/face/register/": {
+            "post": {
+                "operationId": "users_face_register_create",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FaceRegisterRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FaceRegisterRequest"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FaceRegisterRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FaceRegisterEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/face/verify/": {
+            "post": {
+                "operationId": "users_face_verify_create",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FaceVerifyRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FaceVerifyRequest"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FaceVerifyRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FaceVerifyEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/feedback/": {
+            "post": {
+                "operationId": "users_feedback_create",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FeedbackCreateRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FeedbackCreateRequest"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FeedbackCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FeedbackCreateEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/login/": {
+            "post": {
+                "operationId": "users_login_create",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WechatLoginRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WechatLoginRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WechatLoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WechatLoginEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/me/": {
+            "get": {
+                "operationId": "users_me_retrieve",
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserMeGetEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "users_me_partial_update",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserMeUpdate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserMeUpdate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedUserMeUpdate"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserMePatchEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/members/": {
+            "get": {
+                "operationId": "users_members_list",
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AdminUserProfile"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "users_members_create",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserProfile"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserProfile"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserProfile"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminUserProfile"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/members/{id}/": {
+            "get": {
+                "operationId": "users_members_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 用户信息 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminUserProfile"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "users_members_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 用户信息 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserProfile"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserProfile"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserProfile"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminUserProfile"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "users_members_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 用户信息 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAdminUserProfile"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAdminUserProfile"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAdminUserProfile"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminUserProfile"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "users_members_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "标识此 用户信息 的 唯一整数值。",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/users/profile/": {
+            "get": {
+                "operationId": "users_profile_retrieve",
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserProfileEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/profile/{id}/": {
+            "get": {
+                "operationId": "users_profile_retrieve_2",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserProfileEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/token/refresh/": {
+            "post": {
+                "operationId": "users_token_refresh_create",
+                "description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenRefresh"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/users/visit-history/": {
+            "get": {
+                "operationId": "users_visit_history_retrieve",
+                "tags": [
+                    "users"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VisitHistoryEnvelope"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AdminUserProfile": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "用户名",
+                        "description": "必填；长度为150个字符或以下；只能包含字母、数字、特殊字符“@”、“.”、“-”和“_”。",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    },
+                    "openid": {
+                        "type": "string",
+                        "title": "微信OpenID",
+                        "maxLength": 64
+                    },
+                    "nickname": {
+                        "type": "string",
+                        "title": "昵称",
+                        "maxLength": 64
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "头像URL",
+                        "maxLength": 200
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "手机号",
+                        "maxLength": 11
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "title": "有效",
+                        "description": "指明用户是否被认为是活跃的。以反选代替删除帐号。"
+                    },
+                    "is_staff": {
+                        "type": "boolean",
+                        "title": "工作人员状态",
+                        "description": "指明用户是否可以登录到这个管理站点。"
+                    },
+                    "balance": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "title": "余额"
+                    },
+                    "membership_expiry": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true,
+                        "title": "会员到期日"
+                    },
+                    "days_remaining": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "membership_status": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "is_face_verified": {
+                        "type": "boolean",
+                        "title": "是否已录入人脸"
+                    },
+                    "face_image": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "人脸底库"
+                    },
+                    "date_joined": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "加入日期"
+                    },
+                    "last_login": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true,
+                        "title": "上次登录"
+                    }
+                },
+                "required": [
+                    "date_joined",
+                    "days_remaining",
+                    "id",
+                    "last_login",
+                    "membership_status",
+                    "nickname",
+                    "openid",
+                    "username"
+                ]
+            },
+            "Booking": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "course": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Course"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/StatusEnum"
+                            }
+                        ],
+                        "title": "状态"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "预约时间"
+                    }
+                },
+                "required": [
+                    "course",
+                    "created_at",
+                    "id"
+                ]
+            },
+            "ChatData": {
+                "type": "object",
+                "properties": {
+                    "answer": {
+                        "type": "string"
+                    },
+                    "sources": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "related_questions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "visual_guide": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    }
+                },
+                "required": [
+                    "answer"
+                ]
+            },
+            "ChatEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/ChatData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "ChatRequest": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "message"
+                ]
+            },
+            "CheckIn": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "method": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MethodEnum"
+                            }
+                        ],
+                        "title": "方式"
+                    },
+                    "checkin_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "入场时间"
+                    },
+                    "checkout_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true,
+                        "title": "离场时间"
+                    }
+                },
+                "required": [
+                    "checkin_time",
+                    "id"
+                ]
+            },
+            "Course": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "课程名称",
+                        "maxLength": 100
+                    },
+                    "coach": {
+                        "type": "integer",
+                        "nullable": true,
+                        "title": "教练"
+                    },
+                    "coach_name": {
+                        "type": "string",
+                        "title": "教练姓名",
+                        "maxLength": 100
+                    },
+                    "coach_display": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "开始时间"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "format": "int64",
+                        "title": "时长(分钟)"
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "format": "int64",
+                        "title": "最大容量"
+                    },
+                    "booked_count": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "format": "int64",
+                        "title": "已预约人数"
+                    },
+                    "available_seats": {
+                        "type": "integer",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "available_seats",
+                    "coach_display",
+                    "id",
+                    "name",
+                    "start_time"
+                ]
+            },
+            "CourseScheduleEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "Equipment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "器械名称",
+                        "maxLength": 100
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "器械描述"
+                    },
+                    "gif_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "演示动图URL",
+                        "maxLength": 200
+                    },
+                    "part_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "位置区域",
+                        "description": "如: 有氧区, 力量区",
+                        "maxLength": 50
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "器械图片"
+                    }
+                },
+                "required": [
+                    "id",
+                    "location",
+                    "name",
+                    "part_name"
+                ]
+            },
+            "EquipmentListEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Equipment"
+                        }
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "EquipmentRepairCreate": {
+                "type": "object",
+                "properties": {
+                    "equipment_name": {
+                        "type": "string"
+                    },
+                    "issue_description": {
+                        "type": "string"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "equipment_name",
+                    "issue_description"
+                ]
+            },
+            "EquipmentRepairCreateData": {
+                "type": "object",
+                "properties": {
+                    "repair_id": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "repair_id"
+                ]
+            },
+            "EquipmentRepairCreateEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EquipmentRepairCreateData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "EquipmentUsage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "equipment": {
+                        "type": "integer",
+                        "title": "器械"
+                    },
+                    "equipment_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "started_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "开始时间"
+                    },
+                    "ended_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true,
+                        "title": "结束时间"
+                    },
+                    "duration_minutes": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "format": "int64",
+                        "title": "使用时长(分钟)"
+                    }
+                },
+                "required": [
+                    "equipment",
+                    "equipment_name",
+                    "id",
+                    "started_at"
+                ]
+            },
+            "FaceRegisterData": {
+                "type": "object",
+                "properties": {
+                    "face_image": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "is_face_verified": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "face_image",
+                    "is_face_verified"
+                ]
+            },
+            "FaceRegisterEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/FaceRegisterData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "FaceRegisterRequest": {
+                "type": "object",
+                "properties": {
+                    "face_image": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "required": [
+                    "face_image"
+                ]
+            },
+            "FaceVerifyData": {
+                "type": "object",
+                "properties": {
+                    "passed": {
+                        "type": "boolean"
+                    },
+                    "similarity": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "action": {
+                        "type": "string"
+                    },
+                    "checkin_id": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "action",
+                    "checkin_id",
+                    "passed",
+                    "similarity"
+                ]
+            },
+            "FaceVerifyEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/FaceVerifyData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "FaceVerifyRequest": {
+                "type": "object",
+                "properties": {
+                    "face_image": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "device_id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "face_image"
+                ]
+            },
+            "FeedbackCreateEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "FeedbackCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "required": [
+                    "content"
+                ]
+            },
+            "GymGuideEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GymGuideList"
+                        }
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "GymGuideList": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "content": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "content",
+                    "image",
+                    "title"
+                ]
+            },
+            "HomeInfoEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "MembershipProduct": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "产品名称",
+                        "maxLength": 100
+                    },
+                    "price": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "title": "价格"
+                    },
+                    "original_price": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "days_duration": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "format": "int64",
+                        "title": "有效期(天)",
+                        "description": "会员有效期天数"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "is_promotion": {
+                        "type": "boolean",
+                        "title": "是否促销"
+                    }
+                },
+                "required": [
+                    "days_duration",
+                    "id",
+                    "name",
+                    "original_price",
+                    "price"
+                ]
+            },
+            "MethodEnum": {
+                "enum": [
+                    "face",
+                    "qr",
+                    "manual"
+                ],
+                "type": "string",
+                "description": "* `face` - 人脸\n* `qr` - 扫码\n* `manual` - 人工"
+            },
+            "OrderStatusData": {
+                "type": "object",
+                "properties": {
+                    "order_id": {
+                        "type": "integer"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "created_at",
+                    "order_id",
+                    "status"
+                ]
+            },
+            "OrderStatusEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/OrderStatusData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "PatchedAdminUserProfile": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "用户名",
+                        "description": "必填；长度为150个字符或以下；只能包含字母、数字、特殊字符“@”、“.”、“-”和“_”。",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    },
+                    "openid": {
+                        "type": "string",
+                        "title": "微信OpenID",
+                        "maxLength": 64
+                    },
+                    "nickname": {
+                        "type": "string",
+                        "title": "昵称",
+                        "maxLength": 64
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "头像URL",
+                        "maxLength": 200
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "手机号",
+                        "maxLength": 11
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "title": "有效",
+                        "description": "指明用户是否被认为是活跃的。以反选代替删除帐号。"
+                    },
+                    "is_staff": {
+                        "type": "boolean",
+                        "title": "工作人员状态",
+                        "description": "指明用户是否可以登录到这个管理站点。"
+                    },
+                    "balance": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "title": "余额"
+                    },
+                    "membership_expiry": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true,
+                        "title": "会员到期日"
+                    },
+                    "days_remaining": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "membership_status": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "is_face_verified": {
+                        "type": "boolean",
+                        "title": "是否已录入人脸"
+                    },
+                    "face_image": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "人脸底库"
+                    },
+                    "date_joined": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "加入日期"
+                    },
+                    "last_login": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true,
+                        "title": "上次登录"
+                    }
+                }
+            },
+            "PatchedCourse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "课程名称",
+                        "maxLength": 100
+                    },
+                    "coach": {
+                        "type": "integer",
+                        "nullable": true,
+                        "title": "教练"
+                    },
+                    "coach_name": {
+                        "type": "string",
+                        "title": "教练姓名",
+                        "maxLength": 100
+                    },
+                    "coach_display": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "开始时间"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "format": "int64",
+                        "title": "时长(分钟)"
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "format": "int64",
+                        "title": "最大容量"
+                    },
+                    "booked_count": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "format": "int64",
+                        "title": "已预约人数"
+                    },
+                    "available_seats": {
+                        "type": "integer",
+                        "readOnly": true
+                    }
+                }
+            },
+            "PatchedTeamMember": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "姓名",
+                        "maxLength": 100
+                    },
+                    "role": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RoleEnum"
+                            }
+                        ],
+                        "title": "角色"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "手机号",
+                        "maxLength": 20
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "头像"
+                    },
+                    "bio": {
+                        "type": "string",
+                        "title": "简介"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "title": "在职"
+                    }
+                }
+            },
+            "PatchedUserMeUpdate": {
+                "type": "object",
+                "properties": {
+                    "nickname": {
+                        "type": "string",
+                        "title": "昵称",
+                        "maxLength": 64
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "头像URL",
+                        "maxLength": 200
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "手机号",
+                        "maxLength": 11
+                    }
+                }
+            },
+            "ProductListEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MembershipProduct"
+                        }
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "PurchaseData": {
+                "type": "object",
+                "properties": {
+                    "new_balance": {
+                        "type": "string"
+                    },
+                    "new_expiry": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "order_id": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "new_balance",
+                    "new_expiry",
+                    "order_id"
+                ]
+            },
+            "PurchaseEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PurchaseData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "PurchaseRequest": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "product_id"
+                ]
+            },
+            "RefundApplyData": {
+                "type": "object",
+                "properties": {
+                    "refund_id": {
+                        "type": "integer"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "new_balance": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "new_balance",
+                    "refund_id",
+                    "status"
+                ]
+            },
+            "RefundApplyEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/RefundApplyData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "RefundApplyRequest": {
+                "type": "object",
+                "properties": {
+                    "order_id": {
+                        "type": "integer"
+                    },
+                    "reason": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "order_id"
+                ]
+            },
+            "RefundStatusData": {
+                "type": "object",
+                "properties": {
+                    "refund_id": {
+                        "type": "integer"
+                    },
+                    "order_id": {
+                        "type": "integer"
+                    },
+                    "refund_status": {
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "order_id",
+                    "reason",
+                    "refund_id",
+                    "refund_status"
+                ]
+            },
+            "RefundStatusEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/RefundStatusData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "RoleEnum": {
+                "enum": [
+                    "coach",
+                    "therapist",
+                    "frontdesk"
+                ],
+                "type": "string",
+                "description": "* `coach` - 私人教练\n* `therapist` - 理疗师\n* `frontdesk` - 前台"
+            },
+            "StatusEnum": {
+                "enum": [
+                    "booked",
+                    "cancelled",
+                    "completed"
+                ],
+                "type": "string",
+                "description": "* `booked` - 已预约\n* `cancelled` - 已取消\n* `completed` - 已完成"
+            },
+            "TeamMember": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "姓名",
+                        "maxLength": 100
+                    },
+                    "role": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RoleEnum"
+                            }
+                        ],
+                        "title": "角色"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "手机号",
+                        "maxLength": 20
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "头像"
+                    },
+                    "bio": {
+                        "type": "string",
+                        "title": "简介"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "title": "在职"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "role"
+                ]
+            },
+            "TokenRefresh": {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "refresh": {
+                        "type": "string",
+                        "writeOnly": true
+                    }
+                },
+                "required": [
+                    "access",
+                    "refresh"
+                ]
+            },
+            "UserMeGetEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/UserProfile"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "UserMePatchEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/UserProfile"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "UserMonthlyStats": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "days": {
+                        "type": "integer"
+                    },
+                    "duration": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "count",
+                    "days",
+                    "duration"
+                ]
+            },
+            "UserProfile": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "nickname": {
+                        "type": "string",
+                        "title": "昵称",
+                        "maxLength": 64
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "头像URL",
+                        "maxLength": 200
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "手机号",
+                        "maxLength": 11
+                    },
+                    "balance": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "title": "余额"
+                    },
+                    "membership_expiry": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true,
+                        "title": "会员到期日"
+                    },
+                    "days_remaining": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "membership_status": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "total_training_days": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "total_training_count": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "is_face_verified": {
+                        "type": "boolean",
+                        "title": "是否已录入人脸"
+                    },
+                    "face_image": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "title": "人脸底库"
+                    },
+                    "monthly_stats": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/UserMonthlyStats"
+                            }
+                        ],
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "days_remaining",
+                    "id",
+                    "membership_status",
+                    "monthly_stats",
+                    "nickname",
+                    "total_training_count",
+                    "total_training_days"
+                ]
+            },
+            "UserProfileEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/UserProfile"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "VisitHistoryEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/VisitHistoryList"
+                        }
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "VisitHistoryList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "visit_time": {
+                        "type": "string"
+                    },
+                    "method": {
+                        "type": "string"
+                    },
+                    "duration_minutes": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "duration_minutes",
+                    "id",
+                    "method",
+                    "visit_time"
+                ]
+            },
+            "WechatLoginData": {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string"
+                    },
+                    "refresh": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "is_new": {
+                        "type": "boolean"
+                    },
+                    "nickname": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "access",
+                    "is_new",
+                    "nickname",
+                    "refresh",
+                    "user_id"
+                ]
+            },
+            "WechatLoginEnvelope": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/WechatLoginData"
+                    }
+                },
+                "required": [
+                    "code",
+                    "data",
+                    "message"
+                ]
+            },
+            "WechatLoginRequest": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "code"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "jwtAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

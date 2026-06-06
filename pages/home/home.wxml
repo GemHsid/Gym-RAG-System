@@ -1,0 +1,181 @@
+<!--pages/home/home.wxml-->
+<view class="container">
+
+  <!-- 顶部 Banner 区 -->
+  <view class="header-section">
+    <image wx:if="{{currentBanner}}" class="banner-bg" src="{{currentBanner}}" mode="aspectFill"></image>
+    <view wx:else class="banner-placeholder">
+      <text class="banner-placeholder-title">{{gymInfo.gym_name || '门店展示待补充'}}</text>
+      <text class="banner-placeholder-desc">当前仅展示真实接口返回内容</text>
+    </view>
+    <view class="overlay"></view>
+    
+    <!-- 悬浮导航 -->
+    <view class="floating-nav">
+      <view class="nav-pill" wx:if="{{bannerMap.brand}}" bindtap="onSwitchBanner" data-type="brand">品牌介绍</view>
+      <view class="nav-pill-group" wx:if="{{bannerMap.store || bannerMap.rest || bannerMap.locker}}">
+        <view class="nav-pill-right" wx:if="{{bannerMap.store}}" bindtap="onShowMap" data-type="store">门店</view>
+        <view class="nav-pill-right" wx:if="{{bannerMap.rest}}" bindtap="onSwitchBanner" data-type="rest">休息区</view>
+        <view class="nav-pill-right" wx:if="{{bannerMap.locker}}" bindtap="onSwitchBanner" data-type="locker">更衣室</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 1. 店面介绍页 -->
+  <view class="gym-info-card">
+    <view class="gym-header">
+      <view class="gym-logo">
+        <image wx:if="{{gymLogoSrc}}" class="gym-logo-image" src="{{gymLogoSrc}}" mode="aspectFill"></image>
+        <text wx:else>GYM</text>
+      </view>
+      <view class="gym-details">
+        <view class="gym-name-row">
+          <text class="gym-name">{{gymInfo.gym_name}}</text>
+        </view>
+        <text class="gym-subtitle" wx:if="{{gymInfo.subtitle}}">{{gymInfo.subtitle}}</text>
+        <view class="gym-tags" wx:if="{{gymInfo.tags && gymInfo.tags.length}}">
+          <text class="tag filled" wx:for="{{gymInfo.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <text class="gym-address" wx:if="{{gymInfo.address}}">{{gymInfo.address}}</text>
+      </view>
+      <!-- 店面详情 Icon -->
+      <view class="gym-detail-icon" bindtap="onGymDetail">></view>
+    </view>
+  </view>
+
+  <!-- 2. 三大金刚位 -->
+  <view class="quick-actions-grid">
+    <!-- a) 到店指引 -->
+    <view class="action-card action-card-guide big" bindtap="onShowMap">
+      <view class="action-content">
+        <text class="action-title">到店指引</text>
+        <text class="action-desc">{{gymInfo.address ? '查看门店位置' : '地址待补充'}}</text>
+      </view>
+      <view class="nav-icon">↗</view>
+    </view>
+
+    <!-- b) 门店器械 -->
+    <view class="action-card action-card-equipment big" bindtap="onEquipment">
+      <view class="action-content">
+        <text class="action-title">门店器械</text>
+        <text class="action-desc">{{recommendedEquipment.length ? '查看当前器械' : '器械资料待补充'}}</text>
+      </view>
+    </view>
+  </view>
+
+
+
+  <!-- 3. 会员卡 -->
+  <view class="membership-section">
+    <view class="section-header">
+      <text class="section-title">会员卡套餐</text>
+      <text class="more-link" bindtap="onMoreMembership">更多 ></text>
+    </view>
+    <view class="empty-text" wx:if="{{gymInfo.membership_recommendation || productRecommendation}}">
+      {{gymInfo.membership_recommendation || productRecommendation}}
+    </view>
+
+    <!-- 路径1：横向滑动会员套餐 -->
+    <scroll-view class="membership-scroll" scroll-x="true" enable-flex="true" wx:if="{{membershipCards.length}}">
+      <block wx:for="{{membershipCards}}" wx:key="id">
+        <view class="membership-card">
+          <view class="card-tag" wx:if="{{item.tag}}">{{item.tag}}</view>
+          <text class="card-name">{{item.name}}</text>
+          <text class="card-duration">{{item.duration}}</text>
+          <text class="card-duration" wx:if="{{item.desc}}">{{item.desc}}</text>
+          <view class="card-price-row">
+             <text class="symbol">¥</text>
+             <text class="amount">{{item.price}}</text>
+             <text class="original" wx:if="{{item.originalPrice}}">¥{{item.originalPrice}}</text>
+          </view>
+          <view class="buy-btn-sm" bindtap="onBuyCard" data-id="{{item.id}}">立即抢购</view>
+        </view>
+      </block>
+    </scroll-view>
+    <view class="empty-text" wx:if="{{!membershipCards.length}}">暂无会员卡信息</view>
+
+    <!-- 路径3：第三方核销入口 (放在滑动列表下方) -->
+    <view class="redeem-block" bindtap="onRedeemCoupon">
+      <view class="redeem-left">
+        <text class="redeem-icon">🎫</text>
+        <view class="redeem-info">
+          <text class="redeem-title">抖音/美团核销</text>
+        </view>
+      </view>
+      <text class="redeem-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 4. 推荐课程 -->
+  <view class="membership-section">
+    <view class="section-header">
+      <text class="section-title">推荐课程</text>
+      <text class="more-link" bindtap="onCourse">更多 ></text>
+    </view>
+    <view class="empty-text" wx:if="{{!recommendedCourses.length}}">暂无推荐课程</view>
+    <view class="recommend-course-list" wx:if="{{recommendedCourses.length}}">
+      <view class="recommend-course-item" wx:for="{{recommendedCourses}}" wx:key="id">
+        <view class="recommend-course-main">
+          <text class="recommend-course-name">{{item.name}}</text>
+          <view class="recommend-course-tags">
+            <text class="course-tag" wx:if="{{item.category}}">{{item.category}}</text>
+            <text class="course-tag" wx:if="{{item.intensity_level}}">{{item.intensity_level}}</text>
+            <text class="course-tag">{{item.coach_name}}</text>
+          </view>
+          <text class="recommend-course-meta">{{item.start_time}}</text>
+        </view>
+        <view class="buy-btn-sm" bindtap="onBookCourse" data-id="{{item.id}}">预约</view>
+      </view>
+    </view>
+  </view>
+
+
+
+  <!-- 核销弹窗 -->
+  <view class="modal-mask" wx:if="{{showRedeemModal}}" bindtap="closeRedeemModal">
+    <view class="modal-content redeem-modal" catchtap="preventBubble">
+      <view class="modal-header">
+        <view class="close-icon" bindtap="closeRedeemModal">×</view>
+        <text class="modal-title">团购核销</text>
+      </view>
+      <view class="modal-body">
+        <text class="redeem-subtitle">支持抖音 / 美团券码验券</text>
+        <view class="redeem-input-wrap">
+          <text class="redeem-input-icon">🎫</text>
+          <input class="redeem-input" placeholder="请输入抖音/美团券码" value="{{redeemCode}}" bindinput="onRedeemInput" confirm-type="done" />
+        </view>
+        <button class="redeem-btn" bindtap="confirmRedeem">立即核销</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 立即抢购弹窗 (新增) -->
+  <view class="modal-mask" wx:if="{{showBuyModal}}" bindtap="closeBuyModal">
+    <view class="modal-content buy-modal" catchtap="preventBubble">
+      <view class="close-icon-circle" bindtap="closeBuyModal">×</view>
+      
+      <!-- 顶部区域 -->
+      <view class="buy-header">
+        <view class="card-name-lg">{{selectedCard.name}}</view>
+        <view class="card-validity-lg">{{selectedCard.duration}}</view>
+        <view class="card-price-lg">价格 ¥{{selectedCard.price}}</view>
+        <image class="crown-bg" src="/assets/crown.png" mode="widthFix"></image>
+      </view>
+
+      <!-- 底部白色区域 -->
+      <view class="buy-body">
+        <view class="buy-desc">1. 支付完进入门店自动开卡，如未到店7天后自动开卡</view>
+        <button 
+          class="confirm-read-btn {{!buyBtnDisabled ? 'active' : ''}}" 
+          bindtap="onConfirmPay"
+        >
+          {{buyBtnText}}
+        </button>
+        <view class="agreement-row {{shakeAnimation ? 'shake' : ''}}">
+          <checkbox class="agreement-checkbox" color="#8B3A3A" checked="{{isAgreementChecked}}" bindtap="onAgreementChange"/>
+          <text bindtap="onAgreementChange">我已阅读并同意《会员协议》</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

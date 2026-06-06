@@ -1,0 +1,30 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="logo-shell">
+      <image class="logo" src="{{logoSrc}}" mode="aspectFill"></image>
+    </view>
+    <text class="title">欢迎进入智能健身系统</text>
+    <text class="subtitle">登录后可使用购卡、预约、AI问答和个人中心服务</text>
+  </view>
+
+  <view class="login-box">
+    <button class="btn-wechat" bindtap="onWechatLogin">
+      <text class="icon">微信</text>
+      <text>微信一键登录</text>
+    </button>
+    <text class="login-tip">建议使用微信授权登录，便于同步会员状态和订单记录。</text>
+  </view>
+
+  <view class="agreement">
+    <checkbox-group bindchange="onAgreementChange">
+      <label class="checkbox-label">
+        <checkbox value="agree" checked="{{isAgreed}}" color="#2D2D2D" style="transform:scale(0.7)"/>
+        <text class="text">我已阅读并同意</text>
+        <text class="link" catchtap="onShowAgreement">《用户服务协议》</text>
+        <text class="text">与</text>
+        <text class="link" catchtap="onShowPrivacy">《隐私政策》</text>
+      </label>
+    </checkbox-group>
+  </view>
+</view>

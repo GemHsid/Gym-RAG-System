@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ equipment.name }} - 智能可视化指导</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        :root {
+            --primary: #8B3A3A;
+            --accent: #B08D77;
+            --bg: #F5E6DC;
+            --text: #333;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang SC', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 20px;
+            border: 2px solid var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        h1 { margin: 0; color: var(--primary); }
+
+        .equipment-visual {
+            display: flex;
+            gap: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .visual-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .gif-preview {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .gif-preview img {
+            width: 100%;
+            display: block;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .speed-control {
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .speed-control.active {
+            color: white;
+            font-weight: bold;
+        }
+
+        .model-viewer {
+            height: 300px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            overflow: hidden;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ai-assistant {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #eee;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-height: 300px;
+        }
+
+        .message {
+            padding: 10px 15px;
+            border-radius: 12px;
+            max-width: 85%;
+            font-size: 0.95rem;
+        }
+
+        .message.ai {
+            background: white;
+            border: 1px solid #eee;
+            align-self: flex-start;
+            border-top-left-radius: 2px;
+        }
+
+        .message.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 2px;
+        }
+
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quick-questions button {
+            background: white;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-questions button:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .equipment-visual {
+                flex-direction: column;
+            }
+            
+            .model-viewer {
+                height: 250px;
+            }
+            
+            .ai-assistant {
+                height: 400px; /* Fixed height on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-btn">← 返回首页</a>
+            <h1>{{ equipment.name }}</h1>
+        </header>
+
+        <div class="equipment-visual">
+            <!-- Left Column: Visuals -->
+            <div class="visual-column">
+                <div class="gif-preview">
+                    {% if equipment.gif_url %}
+                    <img src="{{ equipment.gif_url }}" alt="{{ equipment.name }}演示">
+                    {% else %}
+                    <div style="height: 300px; background: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                        暂无动作演示 GIF
+                    </div>
+                    {% endif %}
+                    <div class="controls">
+                        <button class="speed-control" onclick="alert('0.5x')">慢速</button>
+                        <button class="speed-control active" onclick="alert('1.0x')">常速</button>
+                        <button class="speed-control" onclick="alert('2.0x')">快速</button>
+                    </div>
+                </div>
+
+                <div class="model-viewer">
+                    <model-viewer 
+                        src="{{ equipment.model_3d_url|default:'/static/models/default.glb' }}" 
+                        ar 
+                        camera-controls 
+                        shadow-intensity="1"
+                        auto-rotate>
+                    </model-viewer>
+                </div>
+            </div>
+            
+            <!-- Right Column: AI Assistant -->
+            <div class="ai-assistant">
+                <h3 style="margin-top: 0; color: var(--primary);">🤖 AI 动作指导</h3>
+                <div class="chat-container" id="chatBox">
+                    <div class="message ai">
+                        <p>您好！我是您的AI私教。关于 <strong>{{ equipment.name }}</strong>，您想了解什么？</p>
+                    </div>
+                </div>
+                
+                <div class="quick-questions">
+                    <button onclick="sendMsg('如何正确使用{{ equipment.name }}？')">使用技巧</button>
+                    <button onclick="sendMsg('使用{{ equipment.name }}有哪些常见错误？')">避免错误</button>
+                    <button onclick="sendMsg('{{ equipment.name }}适合哪些训练目标？')">训练目标</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendMsg(msg) {
+            const chatBox = document.getElementById('chatBox');
+            
+            // Add User Msg
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user';
+            userDiv.innerHTML = `<p>${msg}</p>`;
+            chatBox.appendChild(userDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Mock AI Reply
+            setTimeout(() => {
+                let reply = "这是一个非常好的问题。";
+                if (msg.includes("技巧")) reply = "使用时请保持背部挺直，核心收紧，控制动作速度，不要借力。";
+                if (msg.includes("错误")) reply = "常见错误包括：重量过大导致动作变形、关节锁死、呼吸节奏不对。";
+                if (msg.includes("目标")) reply = "该器械主要针对肌肥大训练，同时也适合增强肌肉耐力。";
+
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai';
+                aiDiv.innerHTML = `<p>${reply}</p>`;
+                chatBox.appendChild(aiDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 800);
+        }
+    </script>
+</body>
+</html>

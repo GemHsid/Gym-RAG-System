@@ -1,0 +1,246 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} | {{ site_title }}</title>
+  <style>
+    :root{
+      --primary:#8B3A3A;
+      --primary2:#6a2c2c;
+      --accent:#B08D77;
+      --bg:#0f1216;
+      --line:rgba(255,255,255,0.10);
+      --text:rgba(255,255,255,0.92);
+      --muted:rgba(255,255,255,0.60);
+      --shadow:0 30px 80px rgba(0,0,0,0.55);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      height:100vh;
+      font-family:"PingFang SC","Microsoft YaHei",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+      background:
+        radial-gradient(900px 520px at 20% 15%, rgba(139,58,58,0.35), transparent 60%),
+        radial-gradient(900px 520px at 80% 20%, rgba(176,141,119,0.22), transparent 60%),
+        radial-gradient(700px 420px at 50% 80%, rgba(139,58,58,0.18), transparent 60%),
+        linear-gradient(180deg, #0b0d10 0%, #12161c 55%, #0f1216 100%);
+      color:var(--text);
+      overflow:hidden;
+    }
+    .grid{
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+    .card{
+      width:min(440px, 100%);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      padding:28px 26px 22px;
+      backdrop-filter: blur(14px);
+    }
+    .top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .mark{
+      width:44px;height:44px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(139,58,58,0.92), rgba(176,141,119,0.82));
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 14px 30px rgba(139,58,58,0.25);
+      display:flex;align-items:center;justify-content:center;
+      flex:0 0 44px;
+    }
+    .mark svg{width:26px;height:26px;}
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .brand h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:0.8px;
+      font-weight:900;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .brand p{
+      margin:0;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .sep{
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+      margin:14px 0 18px;
+    }
+    .error{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 12px;
+      border-radius:14px;
+      background:rgba(255,59,48,0.10);
+      border:1px solid rgba(255,59,48,0.18);
+      color:rgba(255,219,216,0.98);
+      font-size:13px;
+      line-height:1.55;
+      margin-bottom:14px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background:rgba(255,219,216,0.98);
+      margin-top:5px;
+      flex:0 0 10px;
+    }
+    .field{margin-bottom:12px;}
+    label{
+      display:block;
+      font-size:12px;
+      color:rgba(255,255,255,0.70);
+      margin-bottom:8px;
+      letter-spacing:0.4px;
+    }
+    input[type="text"], input[type="password"]{
+      width:100%;
+      height:46px;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(10,12,14,0.35);
+      color:rgba(255,255,255,0.92);
+      font-size:15px;
+      outline:none;
+      transition:border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+    }
+    input::placeholder{color:rgba(255,255,255,0.32);}
+    input:focus{
+      border-color:rgba(176,141,119,0.65);
+      box-shadow:0 0 0 4px rgba(139,58,58,0.18);
+      transform: translateY(-1px);
+    }
+    .row{
+      margin:12px 0 16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .remember{
+      display:flex;align-items:center;gap:8px;
+      font-size:12px;color:rgba(255,255,255,0.66);
+      user-select:none;
+    }
+    .remember input{width:16px;height:16px;accent-color:var(--accent);}
+    .help{
+      font-size:12px;
+      color:rgba(176,141,119,0.92);
+      text-decoration:none;
+    }
+    .help:hover{text-decoration:underline;}
+    .btn{
+      width:100%;
+      height:48px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:linear-gradient(135deg, var(--primary) 0%, var(--primary2) 70%, rgba(139,58,58,0.88) 100%);
+      color:rgba(255,255,255,0.96);
+      font-weight:900;
+      letter-spacing:1.2px;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:0 18px 40px rgba(0,0,0,0.35);
+      transition:transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      box-shadow:0 26px 58px rgba(0,0,0,0.45);
+      filter:saturate(1.05);
+    }
+    .foot{
+      margin-top:14px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:11px;
+      color:rgba(255,255,255,0.45);
+    }
+    @media (max-width:420px){
+      .card{padding:24px 18px 18px;border-radius:16px;}
+      .brand h1{font-size:16px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="card">
+      <div class="top">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 26h6v12h-6a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3Z" fill="rgba(255,255,255,0.92)"/>
+            <path d="M48 26h6a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-6V26Z" fill="rgba(255,255,255,0.92)"/>
+            <path d="M16 28h6v8h-6v-8Zm26 0h6v8h-6v-8Z" fill="rgba(255,255,255,0.92)"/>
+            <path d="M22 30h20v4H22v-4Z" fill="rgba(255,255,255,0.92)"/>
+          </svg>
+        </div>
+        <div class="brand">
+          <h1>铁馆管理后台</h1>
+          <p>请使用管理员账号登录后进入运营看板</p>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <form action="{{ app_path }}" method="post" id="login-form">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <div class="error"><span class="dot"></span><span>{{ error }}</span></div>
+          {% endfor %}
+        {% elif form.errors %}
+          <div class="error"><span class="dot"></span><span>用户名或密码错误，请重试</span></div>
+        {% endif %}
+
+        <div class="field">
+          <label for="id_username">用户名</label>
+          <input type="text" name="username" id="id_username" placeholder="请输入管理员账号" required autofocus>
+        </div>
+
+        <div class="field">
+          <label for="id_password">密码</label>
+          <input type="password" name="password" id="id_password" placeholder="请输入密码" required>
+        </div>
+
+        <div class="row">
+          <label class="remember">
+            <input type="checkbox" name="remember">
+            记住登录状态
+          </label>
+          <a class="help" href="#" onclick="alert('请联系超级管理员重置密码')">忘记密码？</a>
+        </div>
+
+        <button type="submit" class="btn">登 录</button>
+
+        <div class="foot">
+          <span>© 2026 美式铁馆</span>
+          <span>Ver {{ app_version|default:"2.0.0" }}</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

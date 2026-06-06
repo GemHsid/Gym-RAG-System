@@ -1,0 +1,76 @@
+<view class="container">
+
+
+  <view class="detail-header">
+    <image wx:if="{{course.image_url}}" class="cover-img" src="{{course.image_url}}" mode="aspectFill"></image>
+    <view wx:else class="cover-placeholder">
+      <text class="cover-placeholder-text">{{course.name || '课程封面待补充'}}</text>
+    </view>
+    <view class="header-overlay"></view>
+    <view class="back-btn" bindtap="onBack">
+      <text class="icon-back">❮</text>
+    </view>
+    <view class="coach-name-top">教导教练：{{course.coach_display || course.coach_name || '暂无安排'}}</view>
+  </view>
+
+  <view class="course-info-section" wx:if="{{course}}">
+    <view class="title-row">
+      <text class="course-title">{{course.name}}</text>
+      <text class="limit-tag">名额 {{course.booked_count}} / {{course.capacity}}</text>
+    </view>
+    <view class="info-list" wx:if="{{course.category || course.intensity_level}}">
+      <view class="info-item">
+        <text class="info-label">课程分类</text>
+        <text class="info-value">{{course.category || '-'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">强度等级</text>
+        <text class="info-value">{{course.intensity_level || '-'}}</text>
+      </view>
+    </view>
+    <view class="info-list">
+      <view class="info-item">
+        <text class="info-label">开始时间</text>
+        <text class="info-value">{{course.formatted_time || course.start_time}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">课程时长</text>
+        <text class="info-value">{{course.duration}} 分钟</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">剩余名额</text>
+        <text class="info-value limit-highlight">{{course.available_seats !== undefined ? course.available_seats : (course.capacity - course.booked_count)}} 人</text>
+      </view>
+    </view>
+    <view class="info-list" wx:if="{{course.suitable_for || course.description || course.class_prep || course.membership_hint}}">
+      <view class="info-item" wx:if="{{course.suitable_for}}">
+        <text class="info-label">适合人群</text>
+        <text class="info-value">{{course.suitable_for}}</text>
+      </view>
+      <view class="info-item" wx:if="{{course.description}}">
+        <text class="info-label">课程简介</text>
+        <text class="info-value">{{course.description}}</text>
+      </view>
+      <view class="info-item" wx:if="{{course.class_prep}}">
+        <text class="info-label">上课准备</text>
+        <text class="info-value">{{course.class_prep}}</text>
+      </view>
+      <view class="info-item" wx:if="{{course.membership_hint}}">
+        <text class="info-label">会员提醒</text>
+        <text class="info-value">{{course.membership_hint}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <button
+      class="reserve-btn {{!canReserve ? 'disabled' : ''}}"
+      bindtap="onReserve"
+      loading="{{reserving}}"
+      disabled="{{reserving || !canReserve}}"
+    >
+      {{reserveButtonText}}
+    </button>
+    <button class="buy-card-btn" bindtap="onBuyCard">购买会员卡</button>
+  </view>
+</view>

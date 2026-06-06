@@ -1,0 +1,22 @@
+<view class="container">
+  <view class="status-tip" wx:if="{{pageStatus !== 'success'}}">{{pageStatusText}}</view>
+
+  <view class="status-card">
+    <view class="status-header">
+      <text class="status-title">订单状态</text>
+      <text class="status-badge {{statusBadgeType}}">{{statusLabel}}</text>
+    </view>
+    <view class="status-line">订单号：{{orderId || '未获取'}}</view>
+    <view class="status-line" wx:if="{{orderInfo && orderInfo.product_name}}">商品：{{orderInfo.product_name}}</view>
+    <view class="status-line" wx:if="{{orderInfo && orderInfo.amount}}">金额：¥{{orderInfo.amount}}</view>
+    <view class="status-line" wx:if="{{refundInfo && refundInfo.refund_id}}">退款单号：{{refundInfo.refund_id}}</view>
+    <view class="status-desc">{{statusDesc}}</view>
+    <view class="status-desc" wx:if="{{serverOrderNote}}">{{serverOrderNote}}</view>
+    <view class="status-desc" wx:if="{{serverRefundNote}}">{{serverRefundNote}}</view>
+  </view>
+
+  <view class="action-row">
+    <button class="btn refresh-btn" bindtap="onRefresh" loading="{{refreshing}}" disabled="{{refreshing}}">刷新状态</button>
+    <button class="btn refund-btn" bindtap="onApplyRefund" loading="{{refunding}}" disabled="{{!canRefund || refunding}}">申请退款</button>
+  </view>
+</view>

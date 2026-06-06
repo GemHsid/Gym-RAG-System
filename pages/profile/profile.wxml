@@ -1,0 +1,213 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+
+  <!-- 1. 个人中心 - 信息概览 -->
+  <view class="profile-header" bindtap="onHeaderClick">
+    <image class="user-avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+    <view class="user-info">
+      <view class="user-main">
+        <text class="user-nickname">{{userInfo.nickName || '请点击登录'}}</text>
+        <view class="user-status-badge" wx:if="{{isLoggedIn}}">状态正常</view>
+      </view>
+      <text class="user-id" wx:if="{{isLoggedIn}}">ID: {{userInfo.id}}</text>
+      <text class="user-phone" wx:if="{{isLoggedIn}}">{{userInfo.phone}}</text>
+      <text class="user-desc" wx:if="{{!isLoggedIn}}">登录后享受更多权益</text>
+    </view>
+    <text class="arrow">></text>
+  </view>
+
+  <!-- 2. 套餐卡 (Active Membership) -->
+  <view class="card-section">
+    <view class="membership-active-card">
+      <view class="card-header">
+        <text class="card-name">{{memberCard.cardName}}</text>
+        <text class="card-more" bindtap="onBuyCard">更多 ></text>
+      </view>
+      <view class="card-body">
+        <view class="days-left">
+          <text class="num">{{memberCard.daysRemaining}}</text>
+          <text class="unit">天</text>
+          <text class="label">剩余天数</text>
+        </view>
+        <view class="card-status">
+          <text class="status-tag valid">{{memberCard.statusText}}</text>
+          <text class="expiry-date">{{memberCard.expiryText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 常用服务 -->
+  <view class="service-section">
+    <view class="section-title">常用服务</view>
+    <view class="common-services-grid">
+      <view class="common-service-item" bindtap="onBuyCard">
+        <view class="icon-circle icon-buy">💳</view>
+        <text>在线购卡</text>
+      </view>
+      <view class="common-service-item" bindtap="onRedeem">
+        <view class="icon-circle icon-redeem">🎫</view>
+        <text>团购核销</text>
+      </view>
+      <view class="common-service-item" bindtap="onChat">
+        <view class="icon-circle icon-chat">🤖</view>
+        <text>在线服务</text>
+      </view>
+      <view class="common-service-item" bindtap="onFaceVerify">
+        <view class="icon-circle icon-face">📸</view>
+        <text>人脸识别</text>
+      </view>
+      <view class="common-service-item" bindtap="onDoorAccess">
+        <view class="icon-circle icon-face">🚪</view>
+        <text>智能门禁</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 4. 更多服务 -->
+  <view class="service-section">
+    <view class="section-title">更多服务</view>
+    <view class="grid-services">
+      <view class="grid-item" bindtap="onGuide">
+        <view class="icon-small">📖</view>
+        <text>进店指南</text>
+      </view>
+      <view class="grid-item" bindtap="onRepair">
+        <view class="icon-small">🔧</view>
+        <text>器械保修</text>
+      </view>
+      <view class="grid-item" bindtap="onHistory">
+        <view class="icon-small">📅</view>
+        <text>到店记录</text>
+      </view>
+      <view class="grid-item" bindtap="onFeedback">
+        <view class="icon-small">📝</view>
+        <text>我要留言</text>
+      </view>
+      <view class="grid-item" bindtap="onLogout" wx:if="{{isLoggedIn}}">
+        <view class="icon-small" style="color: #D32F2F;">🚪</view>
+        <text style="color: #D32F2F;">退出登录</text>
+      </view>
+    </view>
+  </view>
+
+
+
+  <!-- 弹窗组件 -->
+  <!-- 1. 团购核销弹窗 -->
+  <view class="modal-mask" wx:if="{{showRedeemModal}}" bindtap="closeModal">
+    <view class="modal-content" catchtap="preventBubble">
+      <view class="modal-header">团购券核销</view>
+      <input class="modal-input" placeholder="请输入抖音/美团券码" value="{{redeemCode}}" bindinput="onRedeemInput" />
+      <view class="modal-action-row">
+        <view class="scan-btn" bindtap="onScanRedeem">
+          <text style="font-size: 40rpx; margin-right: 10rpx;">📷</text>
+          <text>扫码</text>
+        </view>
+        <button class="confirm-btn" bindtap="confirmRedeem">确认核销</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 2. 进店指南弹窗 (视频) -->
+  <view class="modal-mask" wx:if="{{showGuide}}" bindtap="closeModal">
+    <view class="modal-content video-modal" catchtap="preventBubble">
+      <view class="modal-close" bindtap="closeModal">×</view>
+      <view class="modal-header">进店指南</view>
+      <video class="guide-video" src="{{guideVideoUrl}}" poster="{{guideCoverImage}}" autoplay="{{true}}"></video>
+    </view>
+  </view>
+
+  <!-- 3. 器械保修弹窗 -->
+  <view class="modal-mask" wx:if="{{showRepair}}" bindtap="closeModal">
+    <view class="modal-content" catchtap="preventBubble">
+      <view class="modal-header">器械保修上报</view>
+      <input
+        class="modal-input"
+        placeholder="请输入故障设备名称，型号或编号"
+        placeholder-class="input-placeholder"
+        value="{{repairEquipmentName}}"
+        bindinput="onRepairEquipmentInput"
+      />
+      <textarea
+        class="modal-textarea"
+        placeholder="请描述故障详情..."
+        placeholder-class="input-placeholder"
+        value="{{repairDescription}}"
+        bindinput="onRepairDescriptionInput"
+      />
+      <button
+        class="modal-btn"
+        bindtap="submitRepair"
+        loading="{{submittingRepair}}"
+        disabled="{{submittingRepair}}"
+      >
+        立即上报
+      </button>
+    </view>
+  </view>
+
+  <!-- 4. 到店记录弹窗 -->
+  <view class="modal-mask" wx:if="{{showHistory}}" bindtap="closeModal">
+    <view class="modal-content" catchtap="preventBubble">
+      <view class="modal-header">近期到店记录</view>
+      <scroll-view scroll-y class="history-list">
+        <block wx:for="{{historyList}}" wx:key="date">
+          <view class="history-item">
+            <text class="history-date">{{item.date}}</text>
+            <text class="history-method">{{item.method}}</text>
+          </view>
+        </block>
+        <view class="history-empty" wx:if="{{!historyList.length}}">暂无到店记录</view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 5. 我要留言弹窗 -->
+  <view class="modal-mask" wx:if="{{showFeedback}}" bindtap="closeModal">
+    <view class="modal-content" catchtap="preventBubble">
+      <view class="modal-header">留言反馈</view>
+      <textarea
+        class="modal-textarea"
+        placeholder="请输入您的建议或意见..."
+        value="{{feedbackContent}}"
+        bindinput="onFeedbackContentInput"
+      />
+      <input
+        class="modal-input"
+        placeholder="联系方式（选填）"
+        value="{{feedbackContact}}"
+        bindinput="onFeedbackContactInput"
+      />
+      <view class="modal-footer-row">
+        <button class="modal-btn-cancel" bindtap="closeModal" disabled="{{submittingFeedback}}">取消</button>
+        <button
+          class="modal-btn-confirm"
+          bindtap="submitFeedback"
+          loading="{{submittingFeedback}}"
+          disabled="{{submittingFeedback}}"
+        >
+          确认
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view class="modal-mask" wx:if="{{showFaceVerify}}" bindtap="closeModal">
+    <view class="modal-content" catchtap="preventBubble">
+      <view class="modal-header">人脸识别录入</view>
+      <view class="face-status-tag {{faceImageUrl ? 'ready' : 'empty'}}">{{faceVerifyStatusText}}</view>
+      <view class="face-preview-wrap">
+        <image wx:if="{{faceImageUrl}}" class="face-preview-img" src="{{faceImageUrl}}" mode="aspectFill"></image>
+        <view wx:else class="face-preview-placeholder">暂无人脸照片，请先拍照录入</view>
+      </view>
+      <view class="modal-footer-row">
+        <button class="modal-btn-cancel" bindtap="closeModal" disabled="{{submittingFace}}">取消</button>
+        <button class="modal-btn-confirm" bindtap="onCaptureFace" loading="{{submittingFace}}" disabled="{{submittingFace}}">
+          {{faceImageUrl ? '重新录入' : '拍照录入'}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+</view>

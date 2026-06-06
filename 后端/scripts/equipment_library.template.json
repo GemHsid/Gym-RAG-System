@@ -1,0 +1,24 @@
+[
+  {
+    "name": "器械名称示例",
+    "part_name": "胸部",
+    "location": "A区-01",
+    "description": "请填写器械介绍",
+    "target_muscles": "胸大肌, 肱三头肌",
+    "precautions": "请填写训练注意事项",
+    "status": "idle",
+    "gif_url": "https://example.com/equipment-demo.gif",
+    "image_path": "scripts/media/chest-machine.jpg"
+  },
+  {
+    "name": "第二个器械示例",
+    "part_name": "背部",
+    "location": "B区-03",
+    "description": "请填写器械介绍",
+    "target_muscles": "背阔肌, 菱形肌",
+    "precautions": "请填写训练注意事项",
+    "status": "maintenance",
+    "gif_url": "https://example.com/equipment-demo-2.gif",
+    "image_path": "scripts/media/back-machine.jpg"
+  }
+]

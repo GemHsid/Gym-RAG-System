@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实时运营看板</title>
+  <!-- 引入 ECharts 用于渲染图表 -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    :root{
+      --primary:#8B3A3A;
+      --primary2:#6a2c2c;
+      --accent:#B08D77;
+      --bg:#f5f7fa;
+      --card:#ffffff;
+      --text:#1f2328;
+      --muted:rgba(31,35,40,0.6);
+      --line:rgba(0,0,0,0.08);
+      --shadow:0 6px 18px rgba(0,0,0,0.08);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      padding:18px;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"PingFang SC","Microsoft YaHei",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+    }
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .title h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:0.5px;
+      font-weight:800;
+    }
+    .title p{
+      margin:0;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .badge{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .badge span{
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(139,58,58,0.06);
+      border:1px solid rgba(139,58,58,0.14);
+      color:rgba(139,58,58,0.95);
+      font-weight:700;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:12px;
+      box-shadow:var(--shadow);
+      padding:16px 14px;
+      min-height:92px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .card.highlight {
+      background: linear-gradient(135deg, #8B3A3A 0%, #B08D77 100%);
+      color: white;
+    }
+    .card.highlight .k, .card.highlight .sub {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .card.highlight .v {
+      color: white;
+    }
+    .k{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0.2px;
+      z-index: 1;
+    }
+    .v{
+      font-size:28px;
+      font-weight:900;
+      color:var(--primary);
+      letter-spacing:0.4px;
+      line-height:1.1;
+      z-index: 1;
+    }
+    .sub{
+      font-size:12px;
+      color:var(--muted);
+      z-index: 1;
+    }
+    .panel{
+      margin-top:14px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:12px;
+      box-shadow:var(--shadow);
+      padding:16px 14px;
+    }
+    .panel h2{
+      margin:0;
+      font-size:14px;
+      font-weight:800;
+      letter-spacing:0.3px;
+    }
+    .panel p{
+      margin:6px 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .chart-container {
+      width: 100%;
+      height: 300px;
+      margin-top: 15px;
+    }
+    .flex-panel {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 1024px){
+      .grid{grid-template-columns:repeat(2, minmax(0, 1fr));}
+      .flex-panel {grid-template-columns: 1fr;}
+    }
+    @media (max-width: 520px){
+      body{padding:12px;}
+      .grid{grid-template-columns:1fr;}
+      .v{font-size:26px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <div class="title">
+        <h1>实时运营看板</h1>
+        <p>数据来源：系统统计 · 更新时间：{{ current_time }}</p>
+      </div>
+      <div class="badge">
+        <span>Django {{ django_version }}</span>
+        <span>Python {{ python_version }}</span>
+      </div>
+    </div>
+
+    <!-- 核心指标大屏 -->
+    <div class="grid">
+      <div class="card highlight">
+        <div class="k">今日营收 (元)</div>
+        <div class="v">¥ {{ today_revenue }}</div>
+        <div class="sub">今日已支付的订单总额 (共 {{ paid_orders_count }} 笔)</div>
+      </div>
+      <div class="card">
+        <div class="k">历史总营收 (元)</div>
+        <div class="v">¥ {{ total_revenue }}</div>
+        <div class="sub">平台累计流水</div>
+      </div>
+      <div class="card">
+        <div class="k">今日入场</div>
+        <div class="v">{{ today_entries }}</div>
+        <div class="sub">今日到店核销/扫码次数</div>
+      </div>
+      <div class="card">
+        <div class="k">当前在馆</div>
+        <div class="v">{{ current_occupancy }}</div>
+        <div class="sub">未离场的实时人数</div>
+      </div>
+      <div class="card">
+        <div class="k">AI 问答量</div>
+        <div class="v">{{ ai_queries }}</div>
+        <div class="sub">统计当日用户向大模型提问次数</div>
+      </div>
+      <div class="card">
+        <div class="k">今日预约</div>
+        <div class="v">{{ today_bookings }}</div>
+        <div class="sub">今日新增课程预约次数</div>
+      </div>
+      <div class="card">
+        <div class="k">数据库状态</div>
+        <div class="v">{{ table_count }}</div>
+        <div class="sub">{{ db_type_name }} 表数量</div>
+      </div>
+      <div class="card">
+        <div class="k">系统启动</div>
+        <div class="v" style="font-size:18px;color:var(--text);font-weight:900;">{{ startup_time }}</div>
+        <div class="sub">版本：{{ app_version }} · 更新：{{ last_updated }}</div>
+      </div>
+    </div>
+
+    <!-- 图表区域 -->
+    <div class="flex-panel">
+        <div class="panel">
+            <h2>近7天营收趋势</h2>
+            <p>统计每日已支付订单的流水总计</p>
+            <div id="revenueChart" class="chart-container"></div>
+        </div>
+        
+        <div class="panel">
+            <h2>系统架构与配置</h2>
+            <p>当前运行环境状态检测</p>
+            <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="padding: 10px; background: #f8f9fa; border-radius: 6px; font-size: 13px;">
+                    <strong>数据库驱动：</strong> {{ db_type_name }} ({{ table_count }} Tables)
+                </div>
+                <div style="padding: 10px; background: #f8f9fa; border-radius: 6px; font-size: 13px;">
+                    <strong>大模型引擎：</strong> {{ rag_engine_text }}
+                </div>
+                <div style="padding: 10px; background: #f8f9fa; border-radius: 6px; font-size: 13px;">
+                    <strong>多媒体存储：</strong> {{ media_storage_text }}
+                </div>
+                <div style="padding: 10px; background: #f8f9fa; border-radius: 6px; font-size: 13px;">
+                    <strong>支付组件：</strong> {{ payment_component_text }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 渲染 ECharts 图表
+    document.addEventListener("DOMContentLoaded", function() {
+        var chartDom = document.getElementById('revenueChart');
+        var myChart = echarts.init(chartDom);
+        
+        // 从 Django 后端接收数据
+        var rawLabels = '{{ chart_labels|safe }}';
+        var rawValues = '{{ chart_values|safe }}';
+        
+        var labels = rawLabels ? JSON.parse(rawLabels) : ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+        var values = rawValues ? JSON.parse(rawValues) : [0, 0, 0, 0, 0, 0, 0];
+
+        var option = {
+            color: ['#8B3A3A'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top: '10%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: labels,
+                    axisTick: { alignWithLabel: true },
+                    axisLine: { lineStyle: { color: '#ccc' } },
+                    axisLabel: { color: '#666' }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    splitLine: { lineStyle: { type: 'dashed', color: '#eee' } },
+                    axisLabel: { color: '#666' }
+                }
+            ],
+            series: [
+                {
+                    name: '营收 (元)',
+                    type: 'bar',
+                    barWidth: '40%',
+                    data: values,
+                    itemStyle: {
+                        borderRadius: [4, 4, 0, 0],
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: '#8B3A3A' },
+                            { offset: 1, color: '#B08D77' }
+                        ])
+                    }
+                },
+                {
+                    name: '趋势',
+                    type: 'line',
+                    smooth: true,
+                    data: values,
+                    itemStyle: { color: '#ff9800' },
+                    lineStyle: { width: 3, shadowColor: 'rgba(0,0,0,0.2)', shadowBlur: 5 }
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+        
+        // 响应式调整
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    });
+  </script>
+</body>
+</html>
